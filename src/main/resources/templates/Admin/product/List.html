@@ -1,0 +1,96 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:replace="Admin/fragments/head :: head"></head>-->
+<!--<body class="hold-transition skin-blue sidebar-mini">-->
+<!--&lt;!&ndash; Site wrapper &ndash;&gt;-->
+<!--<div class="wrapper">-->
+
+<!--  <div th:replace="Admin/fragments/header :: header"></div>-->
+<!--  &lt;!&ndash; =============================================== &ndash;&gt;-->
+
+<!--  &lt;!&ndash; Left side column. contains the sidebar &ndash;&gt;-->
+<!--  <div th:replace="Admin/fragments/aside :: aside"></div>-->
+<!--  &lt;!&ndash; =============================================== &ndash;&gt;-->
+
+<!--  &lt;!&ndash; Content Wrapper. Contains page content &ndash;&gt;-->
+<!--  <div class="content-wrapper">-->
+<!--    &lt;!&ndash; Content Header (Page header) &ndash;&gt;-->
+<!--    <section class="content-header">-->
+<!--      <h1>-->
+<!--        Danh sách Danh Mục-->
+<!--        <small>Quản lý danh mục</small>-->
+<!--      </h1>-->
+<!--      <ol class="breadcrumb">-->
+<!--        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>-->
+<!--        <li><a href="#">Danh mục</a></li>-->
+<!--        <li class="active">Danh sách</li>-->
+<!--      </ol>-->
+<!--    </section>-->
+
+<!--    <section class="content">-->
+<!--      <div class="row">-->
+<!--        <div class="box">-->
+<!--          <div class="box-header with-border">-->
+<!--            <h3 class="box-title">Danh Sách Danh Mục</h3>-->
+<!--            <div>-->
+<!--              <a class="btn btn-success" href="/admin/list">Thêm Mới</a>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="box-body">-->
+<!--            <table class="table table-bordered">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th style="width: 10px">ID</th>-->
+<!--                <th>Tên Danh Mục</th>-->
+<!--                <th>Trạng Thái</th>-->
+<!--                <th style="width: 200px">Hành Động</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr th:each="category : ${categories.content}">-->
+<!--                <td th:text="${category.id}"></td>-->
+<!--                <td th:text="${category.categoryName}"></td>-->
+<!--                <td>-->
+<!--                  <span class="badge bg-success" th:if="${category.categoryStatus}">Hiện</span>-->
+<!--                  <span class="badge bg-red" th:unless="${category.categoryStatus}">Ẩn</span>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                  <a th:href="@{/admin/update/{id}(id=${category.id})}" class="btn btn-primary btn-sm">Cập Nhật</a>-->
+<!--                  <a th:href="@{/admin/delete/{id}(id=${category.id})}" class="btn btn-danger btn-sm" th:onclick="'return confirm(\'Bạn có chắc chắn muốn xóa danh mục này?\')'">Xóa</a>-->
+<!--                </td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </table>-->
+<!--          </div>-->
+
+<!--          <div class="box-footer clearfix">-->
+<!--            <ul class="pagination pagination-sm no-margin pull-right">-->
+<!--              <li th:classappend="${categories.hasPrevious()} ? '' : 'disabled'">-->
+<!--                <a th:href="@{${categories.previousPageable().pageNumber} == 0 ? '#' : '/admin/list?page=' + ${categories.previousPageable().pageNumber}}">«</a>-->
+<!--              </li>-->
+<!--              <li th:each="pageNum : ${#numbers.sequence(0, categories.totalPages - 1)}" th:classappend="${pageNum == categories.number} ? 'active' : ''">-->
+<!--                <a th:href="@{/admin/list?page={page}(page=${pageNum})}" th:text="${pageNum + 1}"></a>-->
+<!--              </li>-->
+<!--              <li th:classappend="${categories.hasNext()} ? '' : 'disabled'">-->
+<!--                <a th:href="@{${categories.nextPageable().pageNumber} == ${categories.totalPages} ? '#' : '/admin/list?page=' + ${categories.nextPageable().pageNumber}}">»</a>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
+
+<!--    &lt;!&ndash; /.content &ndash;&gt;-->
+<!--  </div>-->
+<!--  &lt;!&ndash; /.content-wrapper &ndash;&gt;-->
+
+<!--  <div th:replace="Admin/fragments/footer :: footer"></div>-->
+
+<!--</div>-->
+<!--&lt;!&ndash; ./wrapper &ndash;&gt;-->
+
+<!--&lt;!&ndash; jQuery 3 &ndash;&gt;-->
+<!--<div th:replace="Admin/fragments/script :: script"></div>-->
+<!--</body>-->
+<!--</html>-->

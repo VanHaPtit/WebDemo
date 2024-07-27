@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.2'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(22)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+
+
+	implementation 'com.google.api-client:google-api-client:2.0.0'
+	implementation 'com.google.apis:google-api-services-drive:v3-rev136-1.25.0'
+	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.31.6' // Phiên bản mới nhất
+
+
+	implementation 'commons-io:commons-io:2.11.0'
+
+
+	// bảo mật Security
+	//	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+//	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.2.5.RELEASE'
+
+
+
+
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'mysql:mysql-connector-java:8.0.33'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.h2database:h2:1.4.200'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

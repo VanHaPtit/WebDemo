@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detail</title>
+</head>
+<body>
+<a href="@{/api/user/detail}">detail </a>
+<h1></h1>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>firstName</th>
+        <th>lastName</th>
+        <th>phone</th>
+    </tr>
+    <th:block th:each="user: ${users}">
+        <tr>
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}" ></td>
+            <td th:text="${user.phone}" ></td>
+            <td><a th:href="@{/api/user/Update/__${user.id}__ }">Update</a></td>
+            <td><a th:href="@{/api/user/Update/__${user.id}__ }">Delete</a></td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>
