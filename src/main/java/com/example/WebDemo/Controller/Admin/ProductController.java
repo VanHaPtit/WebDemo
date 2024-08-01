@@ -5,6 +5,7 @@ import com.example.WebDemo.Model.Product;
 import com.example.WebDemo.Service.CategoryService;
 import com.example.WebDemo.Service.FilesStorageService;
 import com.example.WebDemo.Service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,8 +16,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/admin")
@@ -31,6 +38,89 @@ public class ProductController {
     @Autowired
     FilesStorageService storageService;
 
+
+//    public boolean uploadImage(MultipartFile file) {
+////        String message = "";
+//
+//        try {
+//            storageService.save(file);
+////            message = "Uploaded the image successfully: " + file.getOriginalFilename();
+////            model.addAttribute("message", message);
+//        } catch (Exception e) {
+//            return false ;
+////            message = "Could not upload the image: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
+////            model.addAttribute("message", message);
+//        }
+//        return true;
+//    }
+//
+//
+//    @GetMapping("/CreateProduct")
+//    public ModelAndView showCreateProductForm() {
+//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
+//        Product product = new Product();
+//        List<Category> listCate = categoryService.getAll();
+//        modelAndView.addObject("product", product);
+//        modelAndView.addObject("ListCate", listCate);
+//        return modelAndView;
+//    }
+//
+//    // lấy tên ảnh chưa lấy link ảnh
+//
+//    @PostMapping("/CreateProduct")
+//    public ModelAndView saveProduct(@Validated @ModelAttribute("product") Product product,
+//                                    BindingResult bindingResult,
+//                                    @RequestParam("image") MultipartFile fileName) { // Nhận tên tệp dưới dạng String
+//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
+//
+//        // Nếu có lỗi xác thực, trả về trang thêm sản phẩm với các lỗi
+//        if (bindingResult.hasErrors()) {
+//            List<Category> listCate = categoryService.getAll();
+//            modelAndView.addObject("ListCate", listCate);
+//            return modelAndView;
+//        }
+//
+//        String message;
+//        try {
+//            // Kiểm tra xem tên tệp có hợp lệ không và lưu tên tệp vào sản phẩm
+//            if (uploadImage(fileName)) {
+//                // Lưu tên tệp vào sản phẩm
+//                product.setImage(String.valueOf(fileName));
+//            }
+//
+//            // Lưu sản phẩm vào cơ sở dữ liệu
+//            productService.save(product);
+//            message = "Saved the product successfully: " + product.getProductName();
+//        } catch (Exception e) {
+//            message = "Could not save the product. Error: " + e.getMessage();
+//        }
+//
+//        modelAndView.addObject("message", message);
+//        modelAndView.addObject("product", new Product());  // Reset product form
+//        return modelAndView;
+//    }
+
+
+
+
+    private boolean uploadImage(MultipartFile file) {
+        try {
+            // Tạo tên tệp tin duy nhất bằng UUID
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+            // Đường dẫn lưu tệp tin
+            Path path = Paths.get("C:\\Users\\MMC\\OneDrive\\Pictures" + fileName);
+
+            // Lưu tệp tin vào đường dẫn đã chỉ định
+            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     @GetMapping("/CreateProduct")
     public ModelAndView showCreateProductForm() {
         ModelAndView modelAndView = new ModelAndView("Admin/product/add");
@@ -41,40 +131,41 @@ public class ProductController {
         return modelAndView;
     }
 
-    // lấy tên ảnh chưa lấy link ảnh
-
     @PostMapping("/CreateProduct")
-    public ModelAndView saveProduct(@Validated @ModelAttribute("product") Product product,
+    public ModelAndView saveProduct(@Valid @ModelAttribute("product") Product product,
                                     BindingResult bindingResult,
-                                    @RequestParam("image") String fileName) { // Nhận tên tệp dưới dạng String
+                                    @RequestParam("image") MultipartFile file) {
         ModelAndView modelAndView = new ModelAndView("Admin/product/add");
 
-        // Nếu có lỗi xác thực, trả về trang thêm sản phẩm với các lỗi
         if (bindingResult.hasErrors()) {
             List<Category> listCate = categoryService.getAll();
             modelAndView.addObject("ListCate", listCate);
             return modelAndView;
         }
 
-        String message;
         try {
-            // Kiểm tra xem tên tệp có hợp lệ không và lưu tên tệp vào sản phẩm
-            if (fileName != null && !fileName.isEmpty()) {
-                // Lưu tên tệp vào sản phẩm
-                product.setImage(fileName);
+            if (!file.isEmpty()) {
+                // Tạo tên tệp tin duy nhất
+                String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+                // Gọi phương thức để lưu tệp tin
+                if (uploadImage(file)) {
+                    // Lưu tên tệp tin vào đối tượng sản phẩm
+                    product.setImage(fileName);
+                }
             }
 
             // Lưu sản phẩm vào cơ sở dữ liệu
             productService.save(product);
-            message = "Saved the product successfully: " + product.getProductName();
+            modelAndView.addObject("message", "Saved the product successfully: " + product.getProductName());
         } catch (Exception e) {
-            message = "Could not save the product. Error: " + e.getMessage();
+            modelAndView.addObject("message", "Could not save the product. Error: " + e.getMessage());
         }
 
-        modelAndView.addObject("message", message);
-        modelAndView.addObject("product", new Product());  // Reset product form
+        modelAndView.addObject("product", new Product());
         return modelAndView;
     }
+
 
 
 

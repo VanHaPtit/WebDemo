@@ -17,6 +17,8 @@ public class Role {
     @OneToMany(mappedBy = "role")
     private Set<User_Role> roleUsers;
 
+
+
     public Role() {
         super();
         // TODO Auto-generated constructor stub

@@ -31,6 +31,9 @@ public class User {
     @Column(name = "telephone")
     private String telephone;
 
+
+
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<User_Role> userRoles;
 

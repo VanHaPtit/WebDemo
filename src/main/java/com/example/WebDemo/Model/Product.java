@@ -1,7 +1,6 @@
 package com.example.WebDemo.Model;
 
 import jakarta.persistence.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "products")

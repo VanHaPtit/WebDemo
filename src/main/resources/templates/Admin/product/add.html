@@ -1,45 +1,140 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<div th:replace="~{Admin/fragments/head :: head}"></div>-->
+<!--</head>-->
+<!--<body class="hold-transition skin-blue sidebar-mini">-->
+<!--&lt;!&ndash; Site wrapper &ndash;&gt;-->
+<!--<div class="wrapper">-->
+
+<!--    <div th:replace="~{Admin/fragments/header :: header}"></div>-->
+<!--    &lt;!&ndash; =============================================== &ndash;&gt;-->
+
+<!--    &lt;!&ndash; Left side column. contains the sidebar &ndash;&gt;-->
+<!--    <div th:replace="~{Admin/fragments/aside :: aside}"></div>-->
+<!--    &lt;!&ndash; =============================================== &ndash;&gt;-->
+
+<!--    &lt;!&ndash; Content Wrapper. Contains page content &ndash;&gt;-->
+<!--    <div class="content-wrapper">-->
+<!--        &lt;!&ndash; Content Header (Page header) &ndash;&gt;-->
+<!--        <section class="content-header">-->
+<!--            <h1>-->
+<!--                Blank page-->
+<!--                <small>it all starts here</small>-->
+<!--            </h1>-->
+<!--            <ol class="breadcrumb">-->
+<!--                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>-->
+<!--                <li><a href="#">Examples</a></li>-->
+<!--                <li class="active">Blank page</li>-->
+<!--            </ol>-->
+<!--        </section>-->
+
+<!--        <section class="content">-->
+<!--            <div class="row">-->
+
+<!--                <div class="col-md-6">-->
+<!--                    <div class="box box-primary">-->
+<!--                        <div class="box-header with-border">-->
+<!--                            <h3 class="box-title">Create Category</h3>-->
+<!--                        </div>-->
+
+
+<!--&lt;!&ndash;                        <form role="form" method="post"  th:action="@{/admin/CreateProduct}" th:object="${product}">&ndash;&gt;-->
+<!--                        <form role="form" method="post"  th:action="@{/admin/CreateProduct}" th:object="${product}" enctype="multipart/form-data">-->
+<!--                            <div class="box-body">-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="productName">Product Name</label>-->
+<!--                                    <input type="text" class="form-control" id="productName" name="productName" placeholder="Product Name"/>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="price">Product Price</label>-->
+<!--                                    <input type="text" class="form-control" id="price" name="price" placeholder="Product Price"/>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <label for="image">Product Image</label>-->
+<!--                                    <input type="file" class="form-control" id="image" name="image" placeholder="Product Image"/>-->
+<!--                                </div>-->
+<!--                                <div class="form-group">-->
+<!--                                    <div class="form-group" data-select2-id="29">-->
+<!--                                        <label>Category</label>-->
+<!--                                        <select class="form-control select2 select2-hidden-accessible" th:field="*{category.id}">-->
+<!--                                            <option th:each="category : ${ListCate}" th:value="${category.id}" th:text="${category.categoryName}"></option>-->
+<!--                                        </select>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+<!--                            <textarea name="editor1" id="editor1" rows="10" cols="80">-->
+<!--                                This is my textarea-->
+<!--                            </textarea>-->
+
+<!--                            <div class="box-footer">-->
+<!--                                <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--                            </div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--        </section>-->
+<!--        <section class="content">-->
+
+<!--            &lt;!&ndash; Default box &ndash;&gt;-->
+<!--            <div class="box">-->
+
+<!--                &lt;!&ndash;                <div class="box-body">&ndash;&gt;-->
+<!--                &lt;!&ndash;                    Chào mừng đến với trang danh mục&ndash;&gt;-->
+<!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+<!--            </div>-->
+<!--            &lt;!&ndash; /.box &ndash;&gt;-->
+
+<!--        </section>-->
+<!--        &lt;!&ndash; /.content &ndash;&gt;-->
+<!--    </div>-->
+<!--    &lt;!&ndash; /.content-wrapper &ndash;&gt;-->
+
+<!--    <div th:replace="~{Admin/fragments/footer :: footer}"></div>-->
+
+
+<!--</div>-->
+<!--&lt;!&ndash; ./wrapper &ndash;&gt;-->
+
+<!--&lt;!&ndash; jQuery 3 &ndash;&gt;-->
+
+<!--<div th:replace="~{Admin/fragments/script :: script}"></div>-->
+<!--<script th:src="@{/assets/ckeditor/4.22.1/ckeditor.js}"></script>-->
+<!--<script>-->
+<!--    CKEDITOR.replace('editor1');-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{Admin/fragments/head :: head}"></div>
-</head>
+<head th:replace="~{Admin/fragments/head :: head}"></head>
 <body class="hold-transition skin-blue sidebar-mini">
-<!-- Site wrapper -->
 <div class="wrapper">
-
     <div th:replace="~{Admin/fragments/header :: header}"></div>
-    <!-- =============================================== -->
-
-    <!-- Left side column. contains the sidebar -->
     <div th:replace="~{Admin/fragments/aside :: aside}"></div>
-    <!-- =============================================== -->
-
-    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1>
-                Blank page
-                <small>it all starts here</small>
-            </h1>
+            <h1>Blank page<small>it all starts here</small></h1>
             <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
                 <li><a href="#">Examples</a></li>
                 <li class="active">Blank page</li>
             </ol>
         </section>
-
         <section class="content">
             <div class="row">
-
                 <div class="col-md-6">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Create Category</h3>
+                            <h3 class="box-title">Create Product</h3>
                         </div>
-
-
-                        <form role="form" method="post"  th:action="@{/admin/CreateProduct}" th:object="${product}">
-<!--                        <form role="form" method="post"  th:action="@{/admin/CreateProduct}" th:object="${product}" enctype="multipart/form-data">-->
+                        <form role="form" method="post" th:action="@{/admin/CreateProduct}" th:object="${product}" enctype="multipart/form-data">
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="productName">Product Name</label>
@@ -54,53 +149,27 @@
                                     <input type="file" class="form-control" id="image" name="image" placeholder="Product Image"/>
                                 </div>
                                 <div class="form-group">
-                                    <div class="form-group" data-select2-id="29">
-                                        <label>Category</label>
-                                        <select class="form-control select2 select2-hidden-accessible" th:field="*{category.id}">
-                                            <option th:each="category : ${ListCate}" th:value="${category.id}" th:text="${category.categoryName}"></option>
-                                        </select>
-                                    </div>
+                                    <label>Category</label>
+                                    <select class="form-control select2 select2-hidden-accessible" th:field="*{category.id}">
+                                        <option th:each="category : ${ListCate}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+                                    </select>
                                 </div>
                             </div>
-
-                            <textarea name="editor1" id="editor1" rows="10" cols="80">
-                                This is my textarea
-                            </textarea>
-
+                            <textarea name="editor1" id="editor1" rows="10" cols="80">This is my textarea</textarea>
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
-
         </section>
         <section class="content">
-
-            <!-- Default box -->
-            <div class="box">
-
-                <!--                <div class="box-body">-->
-                <!--                    Chào mừng đến với trang danh mục-->
-                <!--                </div>-->
-            </div>
-            <!-- /.box -->
-
+            <div class="box"></div>
         </section>
-        <!-- /.content -->
     </div>
-    <!-- /.content-wrapper -->
-
     <div th:replace="~{Admin/fragments/footer :: footer}"></div>
-
-
 </div>
-<!-- ./wrapper -->
-
-<!-- jQuery 3 -->
-
 <div th:replace="~{Admin/fragments/script :: script}"></div>
 <script th:src="@{/assets/ckeditor/4.22.1/ckeditor.js}"></script>
 <script>
@@ -108,6 +177,3 @@
 </script>
 </body>
 </html>
-
-
-
