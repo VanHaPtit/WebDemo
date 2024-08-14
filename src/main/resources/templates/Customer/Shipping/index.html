@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="Admin/fragments/head :: head"></head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="Admin/fragments/header :: header"></div>
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="Admin/fragments/aside :: aside"></div>
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Blank page
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Danh Sách Shipping</h3>
+                        <div>
+                            <a class="btn btn-success" href="/CustomerOrder/add_shipping">Thêm Mới</a>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <form>
+                            <div class="input-group input-group-sm hidden-xs" style="width: 150px;">
+
+                                <input type="text" name="keyword" class="form-control pull-right" placeholder="Search" th:value="${keyword}">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Company</th>
+                                <th>Address1</th>
+                                <th>Address2</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Postcode</th>
+                                <th>Country</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th style="width: 200px">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="shipping : ${list}">
+                                <td th:text="${shipping.id}"></td>
+                                <td th:text="${shipping.firstName}"></td>
+                                <td th:text="${shipping.lastName}"></td>
+                                <td th:text="${shipping.company}"></td>
+                                <td th:text="${shipping.address1}"></td>
+                                <td th:text="${shipping.address2}"></td>
+                                <td th:text="${shipping.city}"></td>
+                                <td th:text="${shipping.state}"></td>
+                                <td th:text="${shipping.postcode}"></td>
+                                <td th:text="${shipping.country}"></td>
+                                <td th:text="${shipping.email}"></td>
+                                <td th:text="${shipping.phone}"></td>
+                                <td>
+                                    <a th:href="@{/CustomerOrder/update/__${shipping.id}__}" class="btn btn-primary btn-sm">Update</a>
+                                    <a th:href="@{/CustomerOrder/delete/__${shipping.id}__}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <!-- Previous Page Link -->
+                                <li th:if="${currentPage > 1}">
+                                    <a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&pageNo=' + (currentPage - 1) : '?pageNo=' + (currentPage - 1)}}">«</a>
+                                </li>
+
+                                <!-- Page Number Links -->
+                                <li th:each="i : ${#numbers.sequence(1, totalPage)}"
+                                    th:classappend="${currentPage == i ? 'active' : ''}">
+                                    <a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&pageNo=' + i : '?pageNo=' + i}}" th:text="${i}"></a>
+                                </li>
+
+                                <!-- Next Page Link -->
+                                <li th:if="${currentPage < totalPage}">
+                                    <a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&pageNo=' + (currentPage + 1) : '?pageNo=' + (currentPage + 1)}}">»</a>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content">
+            <!-- Default box -->
+            <div class="box">
+                <!--                <div class="box-body">-->
+                <!--                    Chào mừng đến với trang danh mục-->
+                <!--                </div>-->
+            </div>
+            <!-- /.box -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div th:replace="Admin/fragments/footer :: footer"></div>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<div th:replace="Admin/fragments/script :: script"></div>
+</body>
+</html>

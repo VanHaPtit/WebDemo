@@ -1,14 +1,15 @@
 package com.example.WebDemo.Controller.Admin;
 
-import com.example.WebDemo.Model.Category;
-import com.example.WebDemo.Model.Product;
+import com.example.WebDemo.Model.*;
 import com.example.WebDemo.Service.CategoryService;
 import com.example.WebDemo.Service.FilesStorageService;
+//import com.example.WebDemo.Service.ImageUploadService;
 import com.example.WebDemo.Service.ProductService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -16,14 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin")
@@ -39,325 +33,108 @@ public class ProductController {
     FilesStorageService storageService;
 
 
-//    public boolean uploadImage(MultipartFile file) {
-////        String message = "";
-//
-//        try {
-//            storageService.save(file);
-////            message = "Uploaded the image successfully: " + file.getOriginalFilename();
-////            model.addAttribute("message", message);
-//        } catch (Exception e) {
-//            return false ;
-////            message = "Could not upload the image: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
-////            model.addAttribute("message", message);
-//        }
-//        return true;
-//    }
-//
-//
-//    @GetMapping("/CreateProduct")
-//    public ModelAndView showCreateProductForm() {
-//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
-//        Product product = new Product();
-//        List<Category> listCate = categoryService.getAll();
-//        modelAndView.addObject("product", product);
-//        modelAndView.addObject("ListCate", listCate);
-//        return modelAndView;
-//    }
-//
-//    // lấy tên ảnh chưa lấy link ảnh
-//
-//    @PostMapping("/CreateProduct")
-//    public ModelAndView saveProduct(@Validated @ModelAttribute("product") Product product,
-//                                    BindingResult bindingResult,
-//                                    @RequestParam("image") MultipartFile fileName) { // Nhận tên tệp dưới dạng String
-//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
-//
-//        // Nếu có lỗi xác thực, trả về trang thêm sản phẩm với các lỗi
-//        if (bindingResult.hasErrors()) {
-//            List<Category> listCate = categoryService.getAll();
-//            modelAndView.addObject("ListCate", listCate);
-//            return modelAndView;
-//        }
-//
-//        String message;
-//        try {
-//            // Kiểm tra xem tên tệp có hợp lệ không và lưu tên tệp vào sản phẩm
-//            if (uploadImage(fileName)) {
-//                // Lưu tên tệp vào sản phẩm
-//                product.setImage(String.valueOf(fileName));
-//            }
-//
-//            // Lưu sản phẩm vào cơ sở dữ liệu
-//            productService.save(product);
-//            message = "Saved the product successfully: " + product.getProductName();
-//        } catch (Exception e) {
-//            message = "Could not save the product. Error: " + e.getMessage();
-//        }
-//
-//        modelAndView.addObject("message", message);
-//        modelAndView.addObject("product", new Product());  // Reset product form
-//        return modelAndView;
-//    }
-
-
-
-
-    private boolean uploadImage(MultipartFile file) {
-        try {
-            // Tạo tên tệp tin duy nhất bằng UUID
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-
-            // Đường dẫn lưu tệp tin
-            Path path = Paths.get("C:\\Users\\MMC\\OneDrive\\Pictures" + fileName);
-
-            // Lưu tệp tin vào đường dẫn đã chỉ định
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     @GetMapping("/CreateProduct")
     public ModelAndView showCreateProductForm() {
         ModelAndView modelAndView = new ModelAndView("Admin/product/add");
-        Product product = new Product();
+        ProductDTO product = new ProductDTO();
         List<Category> listCate = categoryService.getAll();
         modelAndView.addObject("product", product);
         modelAndView.addObject("ListCate", listCate);
         return modelAndView;
     }
 
-    @PostMapping("/CreateProduct")
-    public ModelAndView saveProduct(@Valid @ModelAttribute("product") Product product,
-                                    BindingResult bindingResult,
-                                    @RequestParam("image") MultipartFile file) {
-        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
 
+
+    @PostMapping("/CreateProduct")
+    public ResponseEntity<?> createProduct(@ModelAttribute ProductDTO productDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            List<Category> listCate = categoryService.getAll();
-            modelAndView.addObject("ListCate", listCate);
-            return modelAndView;
+            return new ResponseEntity<>(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            if (!file.isEmpty()) {
-                // Tạo tên tệp tin duy nhất
-                String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        // Xử lý tệp tải lên
+        List<MultipartFile> files = productDTO.getImages(); // Danh sách MultipartFile
+        List<Image> imageList = new ArrayList<>();
 
-                // Gọi phương thức để lưu tệp tin
-                if (uploadImage(file)) {
-                    // Lưu tên tệp tin vào đối tượng sản phẩm
-                    product.setImage(fileName);
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                if (isImageFile(file)) {
+                    // Lưu tệp và lấy đường dẫn
+                    String imageUrl = storageService.save(file);
+
+                    // Tạo đối tượng Image và thêm vào danh sách
+                    Image image = new Image();
+                    image.setName(file.getOriginalFilename());
+                    image.setContentType(file.getContentType());
+                    image.setSize(file.getSize());
+                    image.setUrl(imageUrl);
+                    imageList.add(image);
                 }
             }
-
-            // Lưu sản phẩm vào cơ sở dữ liệu
-            productService.save(product);
-            modelAndView.addObject("message", "Saved the product successfully: " + product.getProductName());
-        } catch (Exception e) {
-            modelAndView.addObject("message", "Could not save the product. Error: " + e.getMessage());
         }
 
-        modelAndView.addObject("product", new Product());
-        return modelAndView;
+        // Tạo đối tượng Product và thiết lập các thuộc tính
+        Product product = new Product();
+        product.setProductName(productDTO.getProductName());
+        product.setPrice(productDTO.getPrice());
+        product.setDescription(productDTO.getDescription());
+        product.setCategory(productDTO.getCategory());
+        product.setImages(imageList);
+
+        // Liên kết hình ảnh với sản phẩm
+        for (Image image : imageList) {
+            image.setProduct(product);
+        }
+
+        // Lưu sản phẩm vào cơ sở dữ liệu
+        productService.save(product);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
-
-
-
-
-    // đang lấy link ảnh
-
-//    @Autowired
-//    private GoogleDriveService googleDriveService;
-//
-//
-//
-//    @PostMapping("/CreateProduct")
-//    public ModelAndView saveProduct(@Validated @ModelAttribute("product") Product product,
-//                                    BindingResult bindingResult,
-//                                    @RequestParam("image") MultipartFile imageFile) { // Nhận MultipartFile
-//
-//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
-//
-//        // Nếu có lỗi xác thực, trả về trang thêm sản phẩm với các lỗi
-//        if (bindingResult.hasErrors()) {
-//            List<Category> listCate = categoryService.getAll();
-//            modelAndView.addObject("ListCate", listCate);
-//            return modelAndView;
-//        }
-//
-//        String message;
-//        try {
-//            if (imageFile != null && !imageFile.isEmpty()) {
-//                // Tải lên Google Drive và nhận liên kết
-//                String imageUrlOnDrive = googleDriveService.uploadFileToDrive(imageFile.getBytes(), imageFile.getOriginalFilename());
-//                product.setImage(imageUrlOnDrive); // Lưu liên kết ảnh vào sản phẩm
-//            }
-//
-//            // Lưu sản phẩm vào cơ sở dữ liệu
-//            productService.save(product);
-//            message = "Saved the product successfully: " + product.getProductName();
-//        } catch (IOException | GeneralSecurityException e) {
-//            message = "Could not save the product. Error: " + e.getMessage();
-//        }
-//
-//        modelAndView.addObject("message", message);
-//        modelAndView.addObject("product", new Product());  // Reset product form
-//        return modelAndView;
-//    }
-//
-
-
-//    @PostMapping("/CreateProduct")
-//    public ModelAndView saveProduct(@Validated @ModelAttribute("product") Product product,
-//                                    BindingResult bindingResult,
-//                                    @RequestParam("image") String imageFile) { // Nhận MultipartFile
-//
-//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
-//
-//        // Nếu có lỗi xác thực, trả về trang thêm sản phẩm với các lỗi
-//        if (bindingResult.hasErrors()) {
-//            List<Category> listCate = categoryService.getAll();
-//            modelAndView.addObject("ListCate", listCate);
-//            return modelAndView;
-//        }
-//
-//        String message;
-//        try {
-//            if (imageFile != null && !imageFile.isEmpty()) {
-//                // Tải tệp từ URL thành byte[]
-//                byte[] fileBytes = googleDriveService.downloadFileFromUrl(imageFile);
-//                String fileName = "uploaded_image.jpg"; // Tên tệp bạn muốn đặt
-//
-//                // Tải lên Google Drive và nhận liên kết
-//                String imageUrlOnDrive = googleDriveService.uploadFileToDrive(fileBytes, fileName);
-//                product.setImage(imageUrlOnDrive);
-//            }
-//
-//            // Lưu sản phẩm vào cơ sở dữ liệu
-//            productService.save(product);
-//            message = "Saved the product successfully: " + product.getProductName();
-//        } catch (IOException | GeneralSecurityException e) {
-//            message = "Could not save the product. Error: " + e.getMessage();
-//        }
-//
-//        modelAndView.addObject("message", message);
-//        modelAndView.addObject("product", new Product());  // Reset product form
-//        return modelAndView;
-//    }
-
-
-//    @PostMapping("/CreateProduct")
-//    public ModelAndView saveProduct(@Validated @ModelAttribute("product") Product product,
-//                                    BindingResult bindingResult,
-//                                    @RequestParam("image") String imageUrl) { // Nhận URL ảnh dưới dạng String
-//
-//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
-//
-//        // Nếu có lỗi xác thực, trả về trang thêm sản phẩm với các lỗi
-//        if (bindingResult.hasErrors()) {
-//            List<Category> listCate = categoryService.getAll();
-//            modelAndView.addObject("ListCate", listCate);
-//            return modelAndView;
-//        }
-//
-//        String message;
-//        try {
-//            // Kiểm tra xem URL có hợp lệ không và tải lên Google Drive
-//            if (imageUrl != null && !imageUrl.isEmpty()) {
-//                // Tải tệp từ URL thành byte[]
-//                byte[] fileBytes = FileUtils.downloadFileFromUrl(imageUrl);
-//                String fileName = "uploaded_image.jpg"; // Tên tệp bạn muốn đặt
-//
-//                // Tải lên Google Drive và nhận liên kết
-//                String imageUrlOnDrive = googleDriveService.uploadFileToDrive(fileBytes, fileName);
-//                product.setImage(imageUrlOnDrive); // Lưu liên kết ảnh vào sản phẩm
-//            }
-//
-//            // Lưu sản phẩm vào cơ sở dữ liệu
-//            productService.save(product);
-//            message = "Saved the product successfully: " + product.getProductName();
-//        } catch (IOException | GeneralSecurityException e) {
-//            message = "Could not save the product. Error: " + e.getMessage();
-//        }
-//
-//        modelAndView.addObject("message", message);
-//        modelAndView.addObject("product", new Product());  // Reset product form
-//        return modelAndView;
-//    }
-
-
-
-
-
-
-
-
-//    @Autowired
-//    private GoogleDriveService googleDriveService;
-//
-//    @PostMapping("/CreateProduct")
-//    public ModelAndView saveProduct(@Validated @ModelAttribute("product") Product product,
-//                                    BindingResult bindingResult,
-//                                    @RequestParam("imageUrl") String imageUrl) { // Nhận URL ảnh dưới dạng String
-//        ModelAndView modelAndView = new ModelAndView("Admin/product/add");
-//
-//        // Nếu có lỗi xác thực, trả về trang thêm sản phẩm với các lỗi
-//        if (bindingResult.hasErrors()) {
-//            List<Category> listCate = categoryService.getAll();
-//            modelAndView.addObject("ListCate", listCate);
-//            return modelAndView;
-//        }
-//
-//        String message;
-//        try {
-//            // Kiểm tra xem URL có hợp lệ không và tải lên Google Drive
-//            if (imageUrl != null && !imageUrl.isEmpty()) {
-//                String imageUrlOnDrive = googleDriveService.uploadFileToDrive(imageUrl);
-//                product.setImage(imageUrlOnDrive); // Lưu liên kết ảnh vào sản phẩm
-//            }
-//
-//            // Lưu sản phẩm vào cơ sở dữ liệu
-//            productService.save(product);
-//            message = "Saved the product successfully: " + product.getProductName();
-//        } catch (Exception e) {
-//            message = "Could not save the product. Error: " + e.getMessage();
-//        }
-//
-//        modelAndView.addObject("message", message);
-//        modelAndView.addObject("product", new Product());  // Reset product form
-//        return modelAndView;
-//    }
-
-
-
-
-
-
-
+    private boolean isImageFile(MultipartFile file) {
+        String contentType = file.getContentType();
+        String fileName = file.getOriginalFilename();
+        return (contentType.equals("image/jpeg") ||
+                contentType.equals("image/png") ||
+                contentType.equals("image/gif") ||
+                contentType.equals("image/bmp") ||
+                contentType.equals("image/webp")) ||
+                (fileName != null && (fileName.endsWith(".jpg") ||
+                        fileName.endsWith(".jpeg") ||
+                        fileName.endsWith(".png") ||
+                        fileName.endsWith(".gif") ||
+                        fileName.endsWith(".bmp") ||
+                        fileName.endsWith(".webp")));
+    }
 
 
 
     @GetMapping("/product")
-    public ModelAndView showList(Model model) {
+    public ModelAndView showList(Model model , @RequestParam(value = "keyword", required = false) String keyword , @RequestParam(name ="pageNo",defaultValue = "1") Integer pageNo) {
         ModelAndView modelAndView = new ModelAndView("Admin/product/index");
-        List<Product> list = productService.getAll();
+        Page<Product> list = productService.getAll(pageNo);
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            list = productService.seachProduct(keyword , pageNo);
+            modelAndView.addObject("keyword" , keyword);
+        }
+        modelAndView.addObject("totalPage",list.getTotalPages());
+        modelAndView.addObject("currentPage" , pageNo);
         modelAndView.addObject("list",list );
         return modelAndView;
     }
 
+
     @GetMapping("/updateProduct/{ID}")
     public ModelAndView showUpdateForm(@PathVariable("ID") Long ID) {
-        Optional<Product> product = productService.findById(Math.toIntExact(ID));
+        Optional<Product> product = productService.findById(ID);
         if (product.isPresent()) {
             ModelAndView modelAndView = new ModelAndView("Admin/product/Update");
             List<Category> listCate = categoryService.getAll();
+            if (listCate.isEmpty()) {
+                modelAndView.addObject("message", "Danh sách danh mục trống.");
+            }
             modelAndView.addObject("ListCate", listCate);
             modelAndView.addObject("product", product.get());
             return modelAndView;
@@ -366,16 +143,71 @@ public class ProductController {
         }
     }
 
+
+
     @PostMapping("/updateProduct")
-    public ModelAndView update(@Validated @ModelAttribute("product") Product product, BindingResult bindingResult) {
+    public ModelAndView update(@Validated @ModelAttribute("product") ProductDTO productDTO, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView("Admin/product/Update");
+
         if (bindingResult.hasErrors()) {
+            List<Category> listCate = categoryService.getAll();
+            modelAndView.addObject("ListCate", listCate);
             return modelAndView;
         }
-        productService.save(product);
-        ModelAndView modelAndView1 = new ModelAndView("Admin/product/index");
-        return modelAndView1;
+
+        // Tìm sản phẩm hiện tại
+        Product existingProduct = productService.findById(productDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        // Cập nhật thông tin sản phẩm
+        existingProduct.setProductName(productDTO.getProductName());
+        existingProduct.setPrice(productDTO.getPrice());
+        existingProduct.setDescription(productDTO.getDescription());
+        existingProduct.setCategory(productDTO.getCategory());
+
+        // Xử lý hình ảnh mới
+        List<MultipartFile> files = productDTO.getImages(); // Danh sách MultipartFile từ ProductDTO
+        List<Image> newImages = new ArrayList<>();
+
+        if (files != null && !files.isEmpty()) {
+            for (MultipartFile file : files) {
+                if (file != null && !file.isEmpty() && isImageFile(file)) {
+                    // Lưu tệp và lấy đường dẫn
+                    String imageUrl = storageService.save(file);
+
+                    // Tạo đối tượng Image và thêm vào danh sách
+                    Image image = new Image();
+                    image.setName(file.getOriginalFilename());
+                    image.setContentType(file.getContentType());
+                    image.setSize(file.getSize());
+                    image.setUrl(imageUrl);
+                    image.setProduct(existingProduct);
+                    newImages.add(image);
+                }
+            }
+        }
+
+        // Xóa các hình ảnh không còn liên kết
+        Set<Image> imagesToRemove = new HashSet<>(existingProduct.getImages());
+        imagesToRemove.removeAll(newImages);
+
+        // Xóa hình ảnh không còn liên kết
+        for (Image image : imagesToRemove) {
+            existingProduct.getImages().remove(image);
+            image.setProduct(null); // Đặt liên kết về null để không còn liên kết với sản phẩm
+            storageService.delete(image.getUrl()); // Xóa hình ảnh từ cơ sở dữ liệu
+        }
+
+        // Cập nhật hình ảnh mới
+        existingProduct.getImages().addAll(newImages);
+
+        // Lưu sản phẩm vào cơ sở dữ liệu
+        productService.save(existingProduct);
+
+        return new ModelAndView("redirect:/admin/product/index");
     }
+
+
 
 
     @GetMapping("/deleteProduct/{id}")

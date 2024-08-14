@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="Admin/fragments/head :: head">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="Admin/fragments/header :: header"></div>
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="Admin/fragments/aside :: aside"></div>
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Blank page
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Create Shipping</h3>
+                        </div>
+
+
+                        <form role="form" method="post" th:action="@{/CustomerOrder/add_billing}" th:object="${billing}">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="billingId">ID</label>
+                                    <input type="text" class="form-control" id="billingId" name="id" placeholder="ID"/>
+                                </div>
+
+                                <!-- Select CustomerOrder -->
+                                <div class="form-group">
+                                    <label for="customerOrder">Customer Order</label>
+                                    <select class="form-control" id="customerOrder" name="customerOrder.id">
+                                        <option th:each="order : ${customerOrders}" th:value="${order.id}" th:text="${order.name}"></option>
+                                    </select>
+                                </div>
+
+                                <!-- Select Product -->
+                                <div class="form-group">
+                                    <label for="product">Product</label>
+                                    <select class="form-control" id="product" name="product.id" onchange="updateProductDetails(this)">
+                                        <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="productName">Product Name</label>
+                                    <input type="text" class="form-control" id="productName" name="productName" readonly/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="productPrice">Product Price</label>
+                                    <input type="text" class="form-control" id="productPrice" name="productPrice" readonly/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="totalAmount">Total Amount</label>
+                                    <input type="text" class="form-control" id="totalAmount" name="totalAmount" readonly/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="quantity">Quantity</label>
+                                    <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Quantity"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sum">Sum</label>
+                                    <input type="text" class="form-control" id="sum" name="sum" readonly/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address"/>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date">Date</label>
+                                    <input type="date" class="form-control" id="date" name="date"/>
+                                </div>
+                            </div>
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+
+                        <script>
+                            function updateProductDetails(select) {
+                                var productId = select.value;
+                                // Assuming you have a way to fetch product details based on ID
+                                var products = /* Fetch the products details from your server or a predefined list */;
+                                var product = products.find(p => p.id === productId);
+
+                                if (product) {
+                                    document.getElementById('productName').value = product.name;
+                                    document.getElementById('productPrice').value = product.price;
+                                    // Update totalAmount and sum as needed
+                                }
+                            }
+                        </script>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box">
+
+                <!--                <div class="box-body">-->
+                <!--                    Chào mừng đến với trang danh mục-->
+                <!--                </div>-->
+            </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div th:replace="Admin/fragments/footer :: footer"></div>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="Admin/fragments/script :: script"></div>
+</body>
+</html>
+

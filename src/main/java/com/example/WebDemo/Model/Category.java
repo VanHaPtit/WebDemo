@@ -40,12 +40,6 @@ public class Category {
         this.products = products;
     }
 
-    //    public Category(Integer id, String categoryName, Boolean categoryStatus) {
-//        super();
-//        this.id = id;
-//        this.categoryName = categoryName;
-//        this.categoryStatus = categoryStatus;
-//    }
 
     public Integer getId() {
         return id;

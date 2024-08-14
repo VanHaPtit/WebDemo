@@ -1,10 +1,13 @@
 package com.example.WebDemo.Service.Impl;
 
+import com.example.WebDemo.Model.Category;
 import com.example.WebDemo.Model.Product;
 import com.example.WebDemo.Repository.ProductReponsitory;
 import com.example.WebDemo.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +75,26 @@ public class ProductServiceImpl implements ProductService {
             e.printStackTrace();
         }
         return false ;
+    }
+
+    @Override
+    public Page<Product> seachProduct(String keyword, Integer pageNo) {
+        List list = seachProduct(keyword);
+        Pageable pageable = PageRequest.of(pageNo - 1 , 10);
+        Integer start = (int)pageable.getOffset();
+        Integer end = (int)((pageable.getOffset()+pageable.getPageSize()) > list.size() ? list.size() : pageable.getOffset() +pageable.getPageSize());
+        list = list.subList(start , end) ;
+        return new PageImpl<Product>(list,pageable , seachProduct(keyword).size());
+    }
+
+    @Override
+    public List<Product> seachProduct(String keyword) {
+        return productReponsitory.seachProduct(keyword);
+    }
+
+    @Override
+    public Page<Product> getAll(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1 , 10) ;
+        return productReponsitory.findAll(pageable);
     }
 }

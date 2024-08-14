@@ -1,9 +1,9 @@
+
+
 package com.example.WebDemo.Model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -16,47 +16,45 @@ public class User {
     private String userName;
     @Column(name = "password")
     private String passWord;
-    @Column(name = "enabled")
-    private Boolean enabled;
     @Column(name = "fullname")
     private String fullName;
-    @Column(name = "gender")
-    private Boolean gender;
-    @Column(name = "birthday")
-    private Date birthday;
-    @Column(name = "address")
-    private String address;
     @Column(name = "email")
     private String email;
     @Column(name = "telephone")
     private String telephone;
+    @Column(name = "RetypePassWord")
+    private String retypePassWord ;
 
+    public User(Long id, String userName, String passWord, String fullName, String email, String telephone) {
+        this.id = id;
+        this.userName = userName;
+        this.passWord = passWord;
+        this.fullName = fullName;
+        this.email = email;
+        this.telephone = telephone;
+    }
 
+    public User(String userName, String passWord, String fullName, String email, String retypePassWord) {
+        this.userName = userName;
+        this.passWord = passWord;
+        this.fullName = fullName;
+        this.email = email;
+        this.retypePassWord = retypePassWord;
+    }
 
+    public String getRetypePassWord() {
+        return retypePassWord;
+    }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<User_Role> userRoles;
+    public void setRetypePassWord(String retypePassWord) {
+        this.retypePassWord = retypePassWord;
+    }
 
     public User() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public User(Long id, String userName, String passWord, Boolean enabled, String fullName, Boolean gender,
-                Date birthday, String address, String email, String telephone, Set<User_Role> userRoles) {
-        super();
-        this.id = id;
-        this.userName = userName;
-        this.passWord = passWord;
-        this.enabled = enabled;
-        this.fullName = fullName;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.address = address;
-        this.email = email;
-        this.telephone = telephone;
-        this.userRoles = userRoles;
-    }
 
     public Long getId() {
         return id;
@@ -82,44 +80,12 @@ public class User {
         this.passWord = passWord;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getFullName() {
         return fullName;
     }
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public Boolean getGender() {
-        return gender;
-    }
-
-    public void setGender(Boolean gender) {
-        this.gender = gender;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getEmail() {
@@ -136,14 +102,6 @@ public class User {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
-    }
-
-    public Set<User_Role> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<User_Role> userRoles) {
-        this.userRoles = userRoles;
     }
 
 }

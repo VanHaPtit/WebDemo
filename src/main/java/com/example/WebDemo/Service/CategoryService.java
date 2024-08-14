@@ -9,11 +9,23 @@ import java.util.Optional;
 
 public interface CategoryService {
     void delete(Long id);
+
     Page<Category> findAll(Pageable pageInfo);
+
     List<Category> getAll();
+
     public Boolean create(Category category);
+
     public Optional<Category> findById(Integer categoryID);
+
     public Boolean update(Category category);
-    public Category save(Category category) ;
-    public List<Category>findAll();
+
+    public Category save(Category category);
+
+    public List<Category> findAll();
+
+    List<Category>seachCategory(String keyword);
+    Page<Category> seachCategory(String keyword , Integer pageNo);
+
+    Page<Category> getAll(Integer pageNo);
 }

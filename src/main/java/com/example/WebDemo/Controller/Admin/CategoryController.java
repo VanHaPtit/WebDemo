@@ -5,6 +5,7 @@ import com.example.WebDemo.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -20,11 +21,19 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService ;
+
     @GetMapping("/category")
-    public ModelAndView index(Model model) {
+    public ModelAndView index(@RequestParam(value = "keyword", required = false) String keyword , @RequestParam(name ="pageNo",defaultValue = "1") Integer pageNo) {
         ModelAndView modelAndView = new ModelAndView("Admin/category/index");
-        List<Category> list = categoryService.getAll();
-        modelAndView.addObject("list",list );
+        Page<Category> list = categoryService.getAll(pageNo);
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            list = categoryService.seachCategory(keyword , pageNo);
+            modelAndView.addObject("keyword" , keyword);
+        }
+        modelAndView.addObject("totalPage",list.getTotalPages());
+        modelAndView.addObject("currentPage" , pageNo);
+        modelAndView.addObject("list", list);
         return modelAndView;
     }
 

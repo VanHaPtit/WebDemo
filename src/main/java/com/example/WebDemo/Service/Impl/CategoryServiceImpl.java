@@ -5,6 +5,8 @@ import com.example.WebDemo.Repository.CategoryRepository;
 import com.example.WebDemo.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -68,4 +70,27 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
+
+    @Override
+    public List<Category> seachCategory(String keyword) {
+        return categoryRepository.seachCategory(keyword);
+    }
+
+    @Override
+    public Page<Category> seachCategory(String keyword, Integer pageNo) {
+        List list = seachCategory(keyword);
+        Pageable pageable = PageRequest.of(pageNo - 1 , 10);
+        Integer start = (int)pageable.getOffset();
+        Integer end = (int)((pageable.getOffset()+pageable.getPageSize()) > list.size() ? list.size() : pageable.getOffset() +pageable.getPageSize());
+        list = list.subList(start , end) ;
+        return new PageImpl<Category>(list,pageable , seachCategory(keyword).size());
+    }
+
+    @Override
+    public Page<Category> getAll(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo - 1 , 10) ;
+        return categoryRepository.findAll(pageable);
+    }
+
+
 }

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an account</title>
+    <style>
+        /* Định dạng chung cho trang đăng ký */
+        body.register-page {
+            background-color: #f4f6f9; /* Màu nền nhẹ nhàng */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif; /* Chọn font chữ thân thiện */
+        }
+
+        .register-box {
+            width: 380px;
+            background-color: #ffffff; /* Màu nền trắng cho khung đăng ký */
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
+        }
+
+        .register-logo a {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff; /* Màu sắc chủ đạo cho tiêu đề */
+            text-decoration: none;
+            text-align: center;
+            display: block; /* Đảm bảo tiêu đề chiếm toàn bộ chiều ngang */
+        }
+
+        .card {
+            border-radius: 8px;
+            border-top: 3px solid #007bff; /* Màu sắc chủ đạo */
+            box-shadow: none;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .login-box-msg {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666666; /* Màu sắc nhẹ nhàng cho thông báo */
+        }
+
+        .input-group.mb-3 {
+            margin-bottom: 1.5rem; /* Tăng khoảng cách giữa các ô nhập liệu */
+        }
+
+        .input-group.mb-3 input {
+            width: 100%; /* Chiều rộng của ô nhập liệu chiếm toàn bộ chiều rộng của nhóm */
+            padding: 10px; /* Khoảng cách giữa nội dung và viền */
+            font-size: 16px; /* Kích thước font chữ */
+            border-radius: 5px; /* Bo góc của ô nhập liệu */
+            border: 1px solid #ccc; /* Viền của ô nhập liệu */
+        }
+
+        .input-group .form-control {
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            border-color: #ced4da; /* Màu sắc nhẹ nhàng cho viền ô nhập liệu */
+        }
+
+        .input-group-append .input-group-text {
+            background-color: #e9ecef;
+            border-left: none;
+            border-radius: 0 4px 4px 0;
+            border-color: #ced4da;
+        }
+
+        .input-group-text .fas {
+            color: #007bff; /* Màu sắc chủ đạo cho icon */
+        }
+
+        .btn-primary.btn-block {
+            font-size: 18px;
+            background-color: #007bff; /* Màu sắc chủ đạo cho nút đăng ký */
+            border-color: #007bff;
+            border-radius: 4px;
+            padding: 10px;
+            transition: background-color 0.3s ease-in-out; /* Hiệu ứng chuyển màu */
+        }
+
+        .btn-primary.btn-block:hover {
+            background-color: #0056b3; /* Màu sắc khi hover */
+        }
+
+        .icheck-primary input[type="checkbox"] {
+            width: 20px;
+            height: 20px; /* Chiều cao checkbox vừa phải */
+            margin-right: 10px; /* Khoảng cách giữa checkbox và nhãn */
+            vertical-align: middle; /* Căn giữa checkbox với văn bản */
+        }
+
+        .icheck-primary label {
+            font-size: 16px; /* Cỡ chữ đồng đều với các thành phần khác */
+            color: #666666; /* Màu sắc nhẹ nhàng cho nhãn checkbox */
+            vertical-align: middle; /* Căn giữa nhãn với checkbox */
+        }
+
+        .social-auth-links {
+            margin: 20px 0; /* Tăng khoảng cách giữa các nút mạng xã hội */
+            text-align: center;
+        }
+
+        .social-auth-links a.btn {
+            display: flex;
+            align-items: center; /* Căn giữa biểu tượng và văn bản theo chiều dọc */
+            justify-content: center; /* Căn giữa nội dung theo chiều ngang */
+            margin-bottom: 10px;
+            border-radius: 8px; /* Bo góc mềm mại hơn */
+            font-size: 16px;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: background-color 0.3s ease-in-out; /* Hiệu ứng chuyển màu */
+        }
+
+        .social-auth-links a.btn i {
+            margin-right: 10px; /* Tăng khoảng cách giữa biểu tượng và văn bản */
+            font-size: 20px; /* Kích thước biểu tượng */
+        }
+
+        .social-auth-links a.btn-primary {
+            background-color: #3b5998; /* Màu sắc của Facebook */
+        }
+
+        .social-auth-links a.btn-primary:hover {
+            background-color: #2d4373;
+        }
+
+        .social-auth-links a.btn-danger {
+            background-color: #dd4b39; /* Màu sắc của Google */
+        }
+
+        .social-auth-links a.btn-danger:hover {
+            background-color: #c23321;
+        }
+
+        p.mb-1, p.mb-0 {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666666; /* Màu sắc nhẹ nhàng cho các liên kết khác */
+        }
+
+        p.mb-1 a, p.mb-0 a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        p.mb-1 a:hover, p.mb-0 a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="register-page">
+<div class="register-box">
+    <div class="register-logo">
+        <a href="../../index2.html"><b>Create an account</b></a>
+    </div>
+    <div class="card">
+        <div class="card-body register-card-body">
+            <p class="login-box-msg">Register a new membership</p>
+            <form th:action="@{/User/CreateUser}" method="post" th:object="${user}">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Full Name" name="fullName">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Username" name="userName">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Password" name="passWord">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Telephone" name="telephone">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Email" name="email">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="password" class="form-control" placeholder="Retype Password" name="retypePassWord">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                            <label for="agreeTerms">
+                                I agree to the <a href="#">terms</a>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                </div>
+            </form>
+            <div class="social-auth-links text-center">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-block btn-primary">
+                    <i class="fab fa-facebook mr-2"></i>
+                    Sign up using Facebook
+                </a>
+                <a href="#" class="btn btn-block btn-danger">
+                    <i class="fab fa-google-plus mr-2"></i>
+                    Sign up using Google+
+                </a>
+            </div>
+<!--            <a href="login.html" class="text-center">I already have a membership</a>-->
+        </div>
+    </div>
+</div>
+
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../dist/js/adminlte.min.js?v=3.2.0"></script>
+</body>
+</html>

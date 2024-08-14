@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="Admin/fragments/head :: head">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="Admin/fragments/header :: header"></div>
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="Admin/fragments/aside :: aside"></div>
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Blank page
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Create Shipping</h3>
+                        </div>
+
+
+                        <form role="form" method="post" th:action="@{/CustomerOrder/add_shipping}" th:object="${shipping}">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="billingId">ID</label>
+                                    <input type="text" class="form-control" id="billingId" name="id" placeholder="ID"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingFirstName">First Name</label>
+                                    <input type="text" class="form-control" id="billingFirstName" name="firstName" placeholder="First Name"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingLastName">Last Name</label>
+                                    <input type="text" class="form-control" id="billingLastName" name="lastName" placeholder="Last Name"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingCompany">Company</label>
+                                    <input type="text" class="form-control" id="billingCompany" name="company" placeholder="Company"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingAddress1">Address 1</label>
+                                    <input type="text" class="form-control" id="billingAddress1" name="address1" placeholder="Address 1"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingAddress2">Address 2</label>
+                                    <input type="text" class="form-control" id="billingAddress2" name="address2" placeholder="Address 2"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingCity">City</label>
+                                    <input type="text" class="form-control" id="billingCity" name="city" placeholder="City"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingState">State</label>
+                                    <input type="text" class="form-control" id="billingState" name="state" placeholder="State"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingPostcode">Postcode</label>
+                                    <input type="text" class="form-control" id="billingPostcode" name="postcode" placeholder="Postcode"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingCountry">Country</label>
+                                    <input type="text" class="form-control" id="billingCountry" name="country" placeholder="Country"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingEmail">Email</label>
+                                    <input type="email" class="form-control" id="billingEmail" name="email" placeholder="Email"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billingPhone">Phone</label>
+                                    <input type="text" class="form-control" id="billingPhone" name="phone" placeholder="Phone"/>
+                                </div>
+<!--                                <div>-->
+<!--                                    <label>Category</label>-->
+<!--                                    <select class="form-control select2 select2-hidden-accessible" th:field="*{category.id}">-->
+<!--                                        <option th:each="category : ${ListCate}" th:value="${category.id}" th:text="${category.categoryName}"></option>-->
+<!--                                    </select>-->
+<!--                                </div>-->
+
+                            </div>
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box">
+
+                <!--                <div class="box-body">-->
+                <!--                    Chào mừng đến với trang danh mục-->
+                <!--                </div>-->
+            </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div th:replace="Admin/fragments/footer :: footer"></div>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="Admin/fragments/script :: script"></div>
+</body>
+</html>
+

@@ -2,9 +2,117 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>404 Error Page</title>
+    <!-- Link to your CSS files -->
+    <link rel="stylesheet" href="path/to/your/styles.css">
+    <!-- Link to FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+        .content-wrapper {
+            padding: 20px;
+        }
+        .error-page {
+            text-align: center;
+            padding: 40px;
+        }
+        .headline {
+            font-size: 100px;
+            font-weight: bold;
+            color: #f39c12;
+            margin: 0;
+        }
+        .error-content {
+            margin-top: 20px;
+        }
+        .error-content h3 {
+            font-size: 24px;
+            color: #333;
+        }
+        .error-content p {
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+        .error-content a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .error-content a:hover {
+            text-decoration: underline;
+        }
+        .search-form {
+            margin-top: 20px;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+        }
+        .form-control {
+            border-radius: 0;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 300px;
+        }
+        .btn-warning {
+            border-radius: 0;
+            background-color: #f39c12;
+            border-color: #f39c12;
+            color: #fff;
+        }
+        .btn-warning:hover {
+            background-color: #e67e22;
+            border-color: #e67e22;
+        }
+    </style>
 </head>
 <body>
-<h1>Yêu Cầu Của Bạn Đang Sảy Ra Vấn Đề ! Vui Lòng Thử Lại Sau!</h1>
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>404 Error Page</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                        <li class="breadcrumb-item active">404 Error Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="error-page">
+            <h2 class="headline text-warning">404</h2>
+            <div class="error-content">
+                <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Page not found.</h3>
+                <p>
+                    We could not find the page you were looking for.
+                    Meanwhile, you may <a href="/home">return to dashboard</a> or try using the search form below.
+                </p>
+                <form class="search-form" action="/search" method="get">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search">
+                        <div class="input-group-append">
+                            <button type="submit" name="submit" class="btn btn-warning"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</div>
+<!-- Link to your JavaScript files -->
+<script src="path/to/your/scripts.js"></script>
 </body>
 </html>

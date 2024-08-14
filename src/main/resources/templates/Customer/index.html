@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="Admin/fragments/head :: head">
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <div th:replace="Admin/fragments/header :: header"></div>
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <div th:replace="Admin/fragments/aside :: aside"></div>
+    <!-- =============================================== -->
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Blank page
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a href="#">Examples</a></li>
+                <li class="active">Blank page</li>
+            </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Danh Sách Danh Mục</h3>
+                        <div>
+                            <a class="btn btn-success" href="/admin/add_category">Thêm Mới</a>
+                        </div>
+
+                    </div>
+
+                    <div class="box-body">
+
+                        <table>
+                            <thead>
+                            <tr>
+                                <th style="width: 10px">ID</th>
+                                <th>CustomerId</th>
+                                <th>PaymentMethod</th>
+                                <th>PaymentMethodTitle</th>
+                                <th>CustomerIpAddress</th>
+                                <th>Billing</th>
+                                <th>Shipping</th>
+                                <th style="width: 200px">Action</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>ID</th>
+                                <th>FirstName</th>
+                                <th>LastName</th>
+                                <th>Company</th>
+                                <th>Address1</th>
+                                <th>Address2</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Postcode</th>
+                                <th>Country</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>ID</th>
+                                <th>FirstName</th>
+                                <th>LastName</th>
+                                <th>Company</th>
+                                <th>Address1</th>
+                                <th>Address2</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Postcode</th>
+                                <th>Country</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="customer : ${list}">
+                                <td th:text="${customer.id}"></td>
+                                <td th:text="${customer.customerId}"></td>
+                                <td th:text="${customer.paymentMethod}"></td>
+                                <td th:text="${customer.paymentMethodTitle}"></td>
+                                <td th:text="${customer.customerIpAddress}"></td>
+                                <td th:text="${customer.billing.id}"></td>
+                                <td th:text="${customer.billing.firstName}"></td>
+                                <td th:text="${customer.billing.lastName}"></td>
+                                <td th:text="${customer.billing.company}"></td>
+                                <td th:text="${customer.billing.address1}"></td>
+                                <td th:text="${customer.billing.address2}"></td>
+                                <td th:text="${customer.billing.city}"></td>
+                                <td th:text="${customer.billing.state}"></td>
+                                <td th:text="${customer.billing.postcode}"></td>
+                                <td th:text="${customer.billing.country}"></td>
+                                <td th:text="${customer.billing.email}"></td>
+                                <td th:text="${customer.billing.phone}"></td>
+                                <td th:text="${customer.shipping.id}"></td>
+                                <td th:text="${customer.shipping.firstName}"></td>
+                                <td th:text="${customer.shipping.lastName}"></td>
+                                <td th:text="${customer.shipping.company}"></td>
+                                <td th:text="${customer.shipping.address1}"></td>
+                                <td th:text="${customer.shipping.address2}"></td>
+                                <td th:text="${customer.shipping.city}"></td>
+                                <td th:text="${customer.shipping.state}"></td>
+                                <td th:text="${customer.shipping.postcode}"></td>
+                                <td th:text="${customer.shipping.country}"></td>
+                                <td th:text="${customer.shipping.email}"></td>
+                                <td th:text="${customer.shipping.phone}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+
+                    <div class="box-footer clearfix">
+                        <ul class="pagination pagination-sm no-margin pull-right">
+                            <li><a href="#">«</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">»</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+        <section class="content">
+
+            <!-- Default box -->
+            <div class="box">
+
+                <!--                <div class="box-body">-->
+                <!--                    Chào mừng đến với trang danh mục-->
+                <!--                </div>-->
+            </div>
+            <!-- /.box -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div th:replace="Admin/fragments/footer :: footer"></div>
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+
+<div th:replace="Admin/fragments/script :: script"></div>
+</body>
+</html>
